@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
+<title>Home</title>
+<style>
+.flip-box {
+	background-color: transparent;
+	width: 300px;
+	height: 400px;
+	border: 1px solid #f1f1f1;
+	perspective: 1000px;
+}
+
+.flip-box-inner {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	transition: transform 0.8s;
+	transform-style: preserve-3d;
+}
+
+.flip-box:hover .flip-box-inner {
+	transform: rotateY(180deg);
+}
+
+.flip-box-front, .flip-box-back {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.flip-box-front {
+	background-color: Blue;
+	color: white;
+}
+
+.flip-box-back {
+	background-color: orange;
+	color: white;
+	transform: rotateY(180deg);
+}
+
+.carousel-inner img {
+	width: 100%;
+	height: 100%;
+}
+</style>
+<script type="text/javascript">
+	var xlabels = [ 'Micro', 'Small', 'Medium', 'Large', 'Xtra Lare' ];
+	var ytemp = [ 24, 27, 14, 4, 13 ];
+	function showHide() {
+		$("#myChart").toggle();
+	}
+	/*
+	function getChartData(){
+		$.ajax({
+	        type: "POST",
+	        url: "",
+	        data: loginData,
+	        success: function (result) {
+	            return();
+	        },
+	        error: function (result) {
+	            // do something.
+	        }
+	    });
+	}
+	 */
+
+	function radioFlip() {
+		var sel = document.getElementsByName("optradio");
+		if (sel[0].checked) {
+			document.getElementById("throughputTF").disabled = true;
+			document.getElementById("userLoadTF").disabled = false;
+		} else {
+			document.getElementById("userLoadTF").disabled = true;
+			document.getElementById("throughputTF").disabled = false;
+		}
+	}
+
+	async
+	function createChart() {
+		//await anyasynchronous function fr	om where we get the data for the chart
+		//data=await getVirginiaChartData();
+		var myChart = document.getElementById('myChart').getContext('2d');
+		//xlabels=data.xs;
+		//ylabels=data.ys;
+		//Global Options
+		Chart.defaults.global.defaultFontFamily = 'Lato';
+		Chart.defaults.global.defaultFontSize = 12;
+		Chart.defaults.global.defaultFontColor = '#777';
+		var lineChart = new Chart(myChart, {
+			type : 'pie',
+			data : {
+				labels : xlabels,
+				datasets : [ {
+					label : 'EMEA',
+					data : ytemp,
+					fill : true,
+					backgroundColor : [ 'blue', 'green', 'black', 'red',
+							'brown' ],
+					borderWidth : 1,
+					borderColor : '#777',
+					hoverBorderWidth : 3,
+					hoverBorderColor : '#000'
+				} ]
+			},
+			options : {
+				title : {
+					display : true,
+					//text : "Variou VM User Load for EMEA",
+					fontSize : 12
+				},
+				legend : {
+					display : false,
+					position : 'right',
+					labels : {
+						fontColor : '#000'
+					}
+				},
+				layout : {
+
+				},
+				tooltips : {
+					enabled : true
+				}
+			}
+		});
+		document.getElementById("ShowHide").disabled = false;
+	}
+</script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+
+				<div align="left" class="col-sm-4">
+					<label style="color: blue" th:text="${session.userName}"></label>
+				</div>
+				<div class="col-sm-3"></div>
+				<div class="col-sm-3"></div>
+				<div align="right" class="col-sm-2">
+					<a href="https://forms.gle/3t4rZdTrfCBPAf899">Quick Survey</a>
+				</div>
+
+			</nav>
+		</div>
+	</div>
+	<br>
+	<br>
+
+	<div id="demo" class="carousel slide" data-ride="carousel">
+		<ul class="carousel-indicators">
+			<li data-target="#demo" data-slide-to="0" class="active"></li>
+			<li data-target="#demo" data-slide-to="1"></li>
+			<li data-target="#demo" data-slide-to="2"></li>
+		</ul>
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="Perf_Testing_c_1.jpg" alt="Load Testing" width="1076"
+					height="404" />
+				<div class="carousel-caption" style="color: black">
+					<h3>Metrics</h3>
+					<!-- 
+					<p>Performance Testing plays a major role in determining the
+						reliablity of a system</p>
+					-->
+				</div>
+			</div>
+			<div class="carousel-item">
+				<img src="Perf_Testing_LG_2.jpg" alt="Load Generator" width="1076"
+					height="404" />
+				<div class="carousel-caption" style="color: black">
+					<h3>Environment setup</h3>
+					<!-- 
+					<p>Load Generator helps in creating the virtual users during
+						Load Test</p>
+					-->
+				</div>
+			</div>
+			<div class="carousel-item">
+				<img src="Perf_Testing_aws_3.jpg" alt="Cloud" width="1076"
+					height="404" />
+				<div class="carousel-caption" style="color: black">
+					<h3 align="right">Cloud Platform</h3>
+					<!--
+					<p><b><i>We distribute the load with the help of LG(VM's) that are
+						installed in various geographic location</i></b></p>
+					-->
+				</div>
+			</div>
+		</div>
+		<a class="carousel-control-prev" href="#demo" data-slide="prev"> <span
+			class="carousel-control-prev-icon"></span>
+		</a> <a class="carousel-control-next" href="#demo" data-slide="next">
+			<span class="carousel-control-next-icon"></span>
+		</a>
+	</div>
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-5">
+				<div class="flip-box">
+					<div class=" flip-box-inner">
+						<div class="flip-box-front">
+							<h2>Info</h2>
+							<p>Please make sure you select the date, when you would like
+								to lease the Load Generator and the user Load for this region</p>
+							<p>Based on the user Load and the current pricing we should
+								be able to get you the optimal price with which you can lease LG
+								that generate the given load</p>
+							<p>Please turn over to have a look at the instructions</p>
+						</div>
+						<div class="flip-box-back">
+							<h2>Instruction</h2>
+							<p>-></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-5">
+				<form action="#" th:action="@{/home/calculate}" method="post"
+					th:object="${InstanceModel}" class="needs-validation" novalidate>
+					<div class="container">
+						<div class="row form-group">
+							<div class="col-sm-12" align="center">
+								<h3>
+									<u>Requirement</u>
+								</h3>
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-sm-6">
+								<label><b><i>Region</i></b></label>
+							</div>
+							<div class="col-sm-6">
+								<select class="form-control" value="" required="required"></select>
+							</div>
+						</div>
+						<br>
+						<div class="row form-group">
+							<div class="col-sm-6">
+								<label><b><i>Script Type</i></b></label>
+							</div>
+							<div class="col-sm-6">
+								<select class="form-control" value="" required="required"></select>
+							</div>
+						</div>
+						<br>
+						<div class="row form-group">
+							<div class="col-sm-3"></div>
+							<div
+								class="custom-control custom-radio custom-control-inline col-sm-4">
+								<label class="form-check-label"> <input type="radio"
+									class="form-check-input" name="optradio" id="userLoadRadio"
+									onclick="radioFlip()">User Load
+								</label>
+							</div>
+							<div align="right"
+								class="custom-control custom-radio custom-control-inline col-sm-4">
+
+								<label class="form-check-label"> <input type="radio"
+									class="form-check-input" name="optradio" id="throughputRadio"
+									onclick="radioFlip()">Throughput
+								</label>
+								<!-- 
+								<input type="radio" class="custom-control-input" 
+ 									id="throughputRadio" name="throughputRadio" > <label
+									class="custom-control-label" for="customRadio">Throughput</label>
+								-->
+							</div>
+							<div class="col-sm-1"></div>
+						</div>
+						<br>
+						<div class="row form-group">
+							<div class="col-sm-3">
+								<label><b><i>User Load</i></b></label>
+							</div>
+							<div class="col-sm-3">
+								<input type="text" id="userLoadTF" class="form-control"
+									required="required"></select>
+							</div>
+							<div class="col-sm-3">
+								<label><b><i>Throughput</i></b></label>
+							</div>
+							<div class="col-sm-3">
+								<input type="text" id="throughputTF" class="form-control"
+									required="required"></select>
+							</div>
+						</div>
+						<br>
+						<div class="row form-group">
+							<div class="col-sm-6">
+								<label><b><i>Date</i></b></label>
+							</div>
+							<div class="col-sm-6">
+								<input class="form-control" type="date" required="required" />
+							</div>
+						</div>
+						<div class="row form-group">
+							<div align="left" class="col-sm-6">
+								<input type="submit" class="btn btn-dark" style="color: blue" />
+							</div>
+
+							<div align="right" class="col-sm-6">
+								<input type="button" style="color: blue"
+									class="btn btn-dark form-control" value="Calculate"
+									onclick="createChart()" />
+								<!-- 
+								<input type="button" style="color: blue"
+									class="btn btn-dark form-control" id="ShowHide"
+									value="Show/Hide Chart" onclick="showHide()"
+									disabled="disabled" />
+								-->
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-sm-5"></div>
+		</div>
+		<div class="container" style="width: 500px">
+			<canvas id="myChart"></canvas>
+		</div>
+</body>
+</html>
