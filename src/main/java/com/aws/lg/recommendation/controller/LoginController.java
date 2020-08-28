@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.aws.lg.recommendation.model.InstanceModel;
 import com.aws.lg.recommendation.model.LoginModel;
+import com.aws.lg.recommendation.service.HomeService;
 import com.aws.lg.recommendation.service.LoginService;
 
 @Controller
@@ -21,18 +23,21 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 
+	@Autowired
+	private HomeService homeService;
+
 	private int a;
-	
+
 	private HttpSession session;
-	
+
 	@GetMapping(value = "/login")
 	public String loginGetMapping(@ModelAttribute("Login") LoginModel login, HttpServletRequest request, Model model) {
 		session = request.getSession();
-		a=1;
+		a = 1;
 		LoginModel loginModel = new LoginModel();
 		session.setAttribute("Login", loginModel);
 		session.setMaxInactiveInterval(2400);
-		if (a==1) {
+		if (a == 1) {
 			session.setAttribute("loginError", true);
 			session.setAttribute("loginEMessage", "Please Enter a valid username/password...");
 			a++;
@@ -45,10 +50,10 @@ public class LoginController {
 		String firstName = loginService.validateLogin(login.geteMail(), login.getPassword());
 		System.out.println("E-Mail :\t" + login.geteMail() + "\nPassword :\t" + login.getPassword()
 				+ "\nValid Login :\t" + firstName);
-		
-		if (firstName!=null) {
+		if (firstName != null) {
 			session.setAttribute("loginError", true);
-			session.setAttribute("userName", "Hi "+firstName+"...");
+			session.setAttribute("userName", "Hi " + firstName + "...");
+			model.addAttribute("InstanceModel", new InstanceModel(homeService.getAllRegions(),homeService.getAllScriptComplexity()));
 			return ("home");
 		} else {
 			model.addAttribute("Login", new LoginModel());

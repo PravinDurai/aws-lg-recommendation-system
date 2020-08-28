@@ -1,57 +1,80 @@
 package com.aws.lg.recommendation.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class InstanceModel {
-	
-	private Map<String, String> regions=new TreeMap<String, String>();
-	@DateTimeFormat(pattern="dd/MM/yyyy")
-	private Date executionDate;
-	private List<String> scriptType=new ArrayList<String>();
+
+	private Set<String> regionList = new HashSet<String>();
+	private String region;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	private LocalDateTime executionDate;
+	private String scriptComplexity;
+	private Set<String> scriptType = new HashSet<String>();
 	private int userLoad;
 	private int throughput;
-	
+
 	public InstanceModel() {
 		super();
 	}
 
-	public InstanceModel(Map<String, String> regions, Date executionDate, int userLoad,
-			int throughput) {
+	public InstanceModel(Set<String> regionList, Set<String> scriptTypeList) {
 		super();
-		this.regions = regions;
-		this.executionDate = executionDate;
-		this.scriptType=scriptType;
-		this.userLoad = userLoad;
-		this.throughput = throughput;
+		this.regionList = regionList;
+		this.scriptType = scriptTypeList;
 	}
 
-	public Map<String, String> getRegions() {
-		return regions;
+	public Set<String> getRegionList() {
+		return regionList;
 	}
 
-	public void setRegions(Map<String, String> regions) {
-		this.regions = regions;
+	public void setRegionList(Set<String> regionList) {
+		this.regionList = regionList;
 	}
 
-	public Date getExecutionDate() {
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+	/*
+	 * public Date getExecutionDate() { return executionDate; }
+	 * 
+	 * public void setExecutionDate(Date executionDate) { this.executionDate =
+	 * executionDate; }
+	 */
+
+	public LocalDateTime getExecutionDate() {
 		return executionDate;
 	}
 
-	public void setExecutionDate(Date executionDate) {
+	public void setExecutionDate(LocalDateTime executionDate) {
 		this.executionDate = executionDate;
 	}
 
-	public List<String> getScriptType() {
+	public String getScriptComplexity() {
+		return scriptComplexity;
+	}
+
+	public void setScriptComplexity(String scriptComplexity) {
+		this.scriptComplexity = scriptComplexity;
+	}
+
+	public Set<String> getScriptType() {
 		return scriptType;
 	}
 
-	public void setScriptType(List<String> scriptType) {
+	public void setScriptType(Set<String> scriptType) {
 		this.scriptType = scriptType;
 	}
 
@@ -70,4 +93,11 @@ public class InstanceModel {
 	public void setThroughput(int throughput) {
 		this.throughput = throughput;
 	}
+
+	@Override
+	public String toString() {
+		return "InstanceModel [region=" + region + ", executionDate=" + executionDate + ", scriptComplexity="
+				+ scriptComplexity + ", userLoad=" + userLoad + ", throughput=" + throughput + "]";
+	}
+
 }

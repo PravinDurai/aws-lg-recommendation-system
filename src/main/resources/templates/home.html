@@ -174,7 +174,7 @@
 		</ul>
 		<div class="carousel-inner">
 			<div class="carousel-item active">
-				<img src="Perf_Testing_c_1.jpg" alt="Load Testing" width="1076"
+				<img th:src="Perf_Testing_c_1.jpg" alt="Load Testing" width="1076"
 					height="404" />
 				<div class="carousel-caption" style="color: black">
 					<h3>Metrics</h3>
@@ -185,7 +185,7 @@
 				</div>
 			</div>
 			<div class="carousel-item">
-				<img src="Perf_Testing_LG_2.jpg" alt="Load Generator" width="1076"
+				<img th:src="Perf_Testing_LG_2.jpg" alt="Load Generator" width="1076"
 					height="404" />
 				<div class="carousel-caption" style="color: black">
 					<h3>Environment setup</h3>
@@ -196,7 +196,7 @@
 				</div>
 			</div>
 			<div class="carousel-item">
-				<img src="Perf_Testing_aws_3.jpg" alt="Cloud" width="1076"
+				<img th:src="Perf_Testing_aws_3.jpg" alt="Cloud" width="1076"
 					height="404" />
 				<div class="carousel-caption" style="color: black">
 					<h3 align="right">Cloud Platform</h3>
@@ -239,7 +239,7 @@
 			</div>
 			<div class="col-sm-5">
 				<form action="#" th:action="@{/home/calculate}" method="post"
-					th:object="${InstanceModel}" class="needs-validation" novalidate>
+					th:object="${InstanceModel}" class="needs-validation">
 					<div class="container">
 						<div class="row form-group">
 							<div class="col-sm-12" align="center">
@@ -253,16 +253,30 @@
 								<label><b><i>Region</i></b></label>
 							</div>
 							<div class="col-sm-6">
-								<select class="form-control" value="" required="required"></select>
+
+								<select th:field="*{region}" class="form-control" id="region"
+									name="region">
+									<option th:each="i : *{regionList}" th:value="${i}" th:text="${i}">
+								</select> 
+								<div class="valid-feedback">Valid.</div>
+								<div class="invalid-feedback">Please choose one region.</div>
 							</div>
 						</div>
 						<br>
 						<div class="row form-group">
 							<div class="col-sm-6">
-								<label><b><i>Script Type</i></b></label>
+								<label><b><i>Script Complexity</i></b></label>
 							</div>
 							<div class="col-sm-6">
-								<select class="form-control" value="" required="required"></select>
+								
+								<select th:field="*{scriptComplexity}" class="form-control" id="region"
+									name="region">
+									<option th:each="i : *{scriptType}" th:value="${i}" th:text="${i}">
+								</select> 
+								
+								<div class="valid-feedback">Valid.</div>
+								<div class="invalid-feedback">Please select the value for
+									script complexity</div>
 							</div>
 						</div>
 						<br>
@@ -272,7 +286,7 @@
 								class="custom-control custom-radio custom-control-inline col-sm-4">
 								<label class="form-check-label"> <input type="radio"
 									class="form-check-input" name="optradio" id="userLoadRadio"
-									onclick="radioFlip()">User Load
+									onclick="radioFlip()"><b><i>User Load</i></b>
 								</label>
 							</div>
 							<div align="right"
@@ -280,7 +294,7 @@
 
 								<label class="form-check-label"> <input type="radio"
 									class="form-check-input" name="optradio" id="throughputRadio"
-									onclick="radioFlip()">Throughput
+									onclick="radioFlip()"><b><i>Throughput</i></b>
 								</label>
 								<!-- 
 								<input type="radio" class="custom-control-input" 
@@ -296,15 +310,19 @@
 								<label><b><i>User Load</i></b></label>
 							</div>
 							<div class="col-sm-3">
-								<input type="text" id="userLoadTF" class="form-control"
+								<input type="text" id="userLoadTF" th:field="*{userLoad}" class="form-control"
 									required="required"></select>
+								<div class="valid-feedback">Valid.</div>
+								<div class="invalid-feedback">Please fill out this field.</div>
 							</div>
 							<div class="col-sm-3">
 								<label><b><i>Throughput</i></b></label>
 							</div>
 							<div class="col-sm-3">
-								<input type="text" id="throughputTF" class="form-control"
+								<input type="text" id="throughputTF" th:field="*{throughput}" class="form-control"
 									required="required"></select>
+								<div class="valid-feedback">Valid.</div>
+								<div class="invalid-feedback">Please fill out this field.</div>
 							</div>
 						</div>
 						<br>
@@ -313,7 +331,10 @@
 								<label><b><i>Date</i></b></label>
 							</div>
 							<div class="col-sm-6">
-								<input class="form-control" type="date" required="required" />
+								<input class="form-control" type="datetime-local" th:field="*{executionDate}" />
+								<div class="valid-feedback">Valid.</div>
+								<div class="invalid-feedback">Please choose the date when
+									you are planning to execute the load test</div>
 							</div>
 						</div>
 						<div class="row form-group">
