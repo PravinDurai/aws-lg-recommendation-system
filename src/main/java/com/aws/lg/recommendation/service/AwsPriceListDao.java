@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 import com.aws.lg.recommendation.entity.AWSPriceListEntity;
 
 public interface AwsPriceListDao extends JpaRepository<AWSPriceListEntity, Integer> {
-	
+	List<AWSPriceListEntity> findByRegion(String region);
 }

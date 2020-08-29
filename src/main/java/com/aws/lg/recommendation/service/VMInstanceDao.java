@@ -9,4 +9,6 @@ import com.aws.lg.recommendation.entity.VMInfoEntity;
 
 public interface VMInstanceDao extends JpaRepository<VMInfoEntity, Integer> {
 	
+	List<VMInfoEntity> findByRegionAndScriptComplexity(String region, String scriptComplexity);
+	
 }

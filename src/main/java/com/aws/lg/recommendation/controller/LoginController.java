@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.aws.lg.recommendation.algorithm.OptimisedResult;
 import com.aws.lg.recommendation.model.InstanceModel;
 import com.aws.lg.recommendation.model.LoginModel;
 import com.aws.lg.recommendation.service.HomeService;
@@ -51,9 +52,14 @@ public class LoginController {
 		System.out.println("E-Mail :\t" + login.geteMail() + "\nPassword :\t" + login.getPassword()
 				+ "\nValid Login :\t" + firstName);
 		if (firstName != null) {
+			OptimisedResult optimisedResult=new OptimisedResult();
 			session.setAttribute("loginError", true);
 			session.setAttribute("userName", "Hi " + firstName + "...");
 			model.addAttribute("InstanceModel", new InstanceModel(homeService.getAllRegions(),homeService.getAllScriptComplexity()));
+			session.setAttribute("noData", false);
+			session.setAttribute("showCharts", true);
+			session.setAttribute("LinuxMap",optimisedResult.getSortedOrderLinux() );
+			session.setAttribute("WindowsMap",optimisedResult.getSortedOrderWindows() );
 			return ("home");
 		} else {
 			model.addAttribute("Login", new LoginModel());

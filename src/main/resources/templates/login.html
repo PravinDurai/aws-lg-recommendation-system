@@ -12,47 +12,77 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <title>Login</title>
+
+<style>
+body, html {
+	height: 100%;
+	margin: 0;
+}
+
+.bg {
+	/* The image used */
+	background-image: url("/images/Login_6.jpg");
+	/* Full height */
+	height: 100%;
+	/* Center and scale the image nicely */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+</style>
+
 </head>
 <body>
-	<div align="justify" class="container"><br><br>
+	<div align="justify" class="bg container-fluid">
+		<br> <br>
+		<div>
+			<form action="#" th:action="@{/auth/login/validate}" method="post"
+				th:object="${Login}" class="needs-validation" novalidate>
+				<div class="container-fluid">
+					<br>
+					<br>
+					<br>
+					<div class="row">
+						<div align="right" class="col-lg-10"></div>
+						<div align="left" class="col-lg-2">
+							<h4 style="color: orange"><i>Login</i></h2>
+						</div>
+					</div>
+					<br>
+					<div class="row form-froup">
+						<!-- <div class="form-group">  -->
+						<div class="col-lg-6"></div>
+						<div align="right" class="col-lg-3">
+							<label style="color: orange" for="uname">E-Mail:</label>
+						</div>
+						<div align="left" class="col-lg-3">
+							<input type="text" th:field="*{eMail}" class="form-control"
+								id="uname" placeholder="Enter E-Mail" name="uname" required>
+							<div class="valid-feedback">Valid.</div>
+							<div class="invalid-feedback">Please fill out this field.</div>
+						</div>
+						<!-- </div>  -->
+					</div>
+					<br>
+					<div class="row form-froup">
+						<!-- <div class="form-group">  -->
+						<div class="col-lg-6"></div>
+						<div align="right" class="col-lg-3">
+							<label style="color: orange" for="pwd">Password:</label>
+						</div>
+						<div align="left" class="col-lg-3">
+							<input type="password" th:field="*{password}"
+								class="form-control" id="pwd" placeholder="Enter Password"
+								name="pswd" required>
+							<div class="valid-feedback">Valid.</div>
+							<div class="invalid-feedback">Please fill out this field.</div>
+						</div>
+						<!-- </div>  -->
+					</div>
+					<br>
 
-		<form action="#" th:action="@{/auth/login/validate}" method="post"
-			th:object="${Login}" class="needs-validation" novalidate>
-			<div class="container">
-				<div class="row">
-					<div align="center" class="col-lg-12">
-						<h2>Login</h2>
-					</div>
-				</div><br><br>
-				<div class="row form-froup">
-					<!-- <div class="form-group">  -->
-					<div align="right" class="col-lg-5">
-						<label for="uname">E-Mail:</label>
-					</div>
-					<div align="left" class="col-lg-4">
-						<input type="text" th:field="*{eMail}" class="form-control"
-							id="uname" placeholder="Enter E-Mail" name="uname" required>
-						<div class="valid-feedback">Valid.</div>
-						<div class="invalid-feedback">Please fill out this field.</div>
-					</div>
-					<!-- </div>  -->
-				</div><br>
-				<div class="row form-froup">
-					<!-- <div class="form-group">  -->
-					<div align="right" class="col-lg-5">
-						<label for="pwd">Password:</label>
-					</div>
-					<div align="left" class="col-lg-4">
-						<input type="password" th:field="*{password}" class="form-control"
-							id="pwd" placeholder="Enter Password" name="pswd" required>
-						<div class="valid-feedback">Valid.</div>
-						<div class="invalid-feedback">Please fill out this field.</div>
-					</div>
-					<!-- </div>  -->
-				</div><br>
 
-
-				<!--
+					<!--
 			<div class="form-group form-check">
 				<label class="form-check-label"> <input
 					class="form-check-input" type="checkbox" name="remember" required>
@@ -64,24 +94,26 @@
 			</div>
 			-->
 
-				<div class="row">
-					<div align="center" class="col-lg-12">
-						<button type="submit" class="btn btn-primary">Submit</button>
+					<div class="row">
+						<div class="col-lg-9"></div>
+						<div align="center" class="col-lg-3">
+							<button type="submit" class="btn btn-warning" style="color:white">Submit</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-4"></div>
+						<div class="col-lg-5">
+							<div class="alert alert-danger" role="alert"
+								th:if="${!session.loginError}">
+								<strong>Error</strong> <span th:text="${session.loginEMessage}"></span>
+							</div>
+						</div>
+						<div class="col-lg-4"></div>
 					</div>
 				</div>
-				<div class="row">
-				<div class="col-lg-4"></div>
-				<div class="col-lg-5">
-					<div class="alert alert-danger" role="alert" th:if="${!session.loginError}">
-						<strong>Error</strong> <span th:text="${session.loginEMessage}"></span>
-					</div>
-				</div>
-				<div class="col-lg-4"></div>
-			</div>
-			</div>
-		</form>
+			</form>
+		</div>
 	</div>
-
 	<script>
 		// Disable form submissions if there are invalid fields
 		(function() {
