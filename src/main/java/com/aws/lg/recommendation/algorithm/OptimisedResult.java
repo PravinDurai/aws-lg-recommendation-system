@@ -11,6 +11,9 @@ public class OptimisedResult {
 	double totalCostLinux;
 	double totalCostWindows;
 	*/
+	
+	private ECInstance optLinux;
+	private ECInstance optWindows;
 	private Map<Double, ECInstance> topTOptResultLinux=new TreeMap<Double, ECInstance>();
 	private Map<Double, ECInstance> topTOptResultWindows=new TreeMap<Double, ECInstance>();
 	private Map<Double, ECInstance> sortedOrderLinux=new TreeMap<Double, ECInstance>();
@@ -20,8 +23,10 @@ public class OptimisedResult {
 		super();
 	}
 
-	public OptimisedResult(Map<Double, ECInstance> topTLinux,Map<Double, ECInstance> topTWindows,Map<Double, ECInstance> sortedOrderLinux, Map<Double, ECInstance> sortedOrderWindows) {
+	public OptimisedResult(ECInstance optLinux, ECInstance optWindows, Map<Double, ECInstance> topTLinux,Map<Double, ECInstance> topTWindows,Map<Double, ECInstance> sortedOrderLinux, Map<Double, ECInstance> sortedOrderWindows) {
 		super();
+		this.optLinux=optLinux;
+		this.optWindows=optWindows;
 		this.topTOptResultLinux=topTLinux;
 		this.topTOptResultWindows=topTWindows;
 		this.sortedOrderLinux = sortedOrderLinux;
@@ -70,6 +75,22 @@ public class OptimisedResult {
 	public Map<Double, ECInstance> getSortedOrderLinux() {
 		return sortedOrderLinux;
 	}
+	public ECInstance getOptLinux() {
+		return optLinux;
+	}
+
+	public void setOptLinux(ECInstance optLinux) {
+		this.optLinux = optLinux;
+	}
+
+	public ECInstance getOptWindows() {
+		return optWindows;
+	}
+
+	public void setOptWindows(ECInstance optWindows) {
+		this.optWindows = optWindows;
+	}
+
 	public Map<Double, ECInstance> getTopTOptResultLinux() {
 		return topTOptResultLinux;
 	}
@@ -98,7 +119,8 @@ public class OptimisedResult {
 
 	@Override
 	public String toString() {
-		return "OptimisedResult [topTOptResultLinux=" + topTOptResultLinux + ", topTOptResultWindows="
-				+ topTOptResultWindows + "]";
+		return "OptimisedResult [optLinux=" + optLinux + ", optWindows=" + optWindows + ", topTOptResultLinux="
+				+ topTOptResultLinux + ", topTOptResultWindows=" + topTOptResultWindows + ", sortedOrderLinux="
+				+ sortedOrderLinux + ", sortedOrderWindows=" + sortedOrderWindows + "]";
 	}
 }

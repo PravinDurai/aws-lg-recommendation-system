@@ -67,8 +67,7 @@
 }
 </style>
 <script type="text/javascript">
-	var xlabels = [ 'Micro', 'Small', 'Medium', 'Large', 'Xtra Lare' ];
-	var ytemp = [ 24, 27, 14, 4, 13 ];
+	
 	function showHide() {
 		$("#myChart").toggle();
 	}
@@ -108,26 +107,42 @@
 		document.getElementById("linuxTable").hidden = true;
 		document.getElementById("windowsTable").hidden = false;
 	}
-	
-	function showLinuxChart(){
-		document.getElementById("linuxChartGroup").hidden=false;
-		document.getElementById("windowsChartGroup").hidden=ttrue;
+
+	function showLinuxChart() {
+		document.getElementById("linuxChartGroup").hidden = false;
+		document.getElementById("windowsChartGroup").hidden = true;
 	}
-	
-	function showWindowsChart(){
-		document.getElementById("linuxChartGroup").hidden=true;
-		document.getElementById("windowsChartGroup").hidden=false;
+
+	function showWindowsChart() {
+		document.getElementById("linuxChartGroup").hidden = true;
+		document.getElementById("windowsChartGroup").hidden = false;
 	}
-	
+</script>
+<script th:inline="javascript">
+
+	var xlabels = [ 'Micro', 'Small', 'Medium', 'Large', 'Xtra Lare' ];
+	var ytemp =  [5, 7, 114, 41, 63];
 	//The title is dynamic w.r.t region name selected for all the graph
-	async
+	
 	function createChart() {
 		//await anyasynchronous function fr	om where we get the data for the chart
 		//data=await getVirginiaChartData();
-		var linuxChart = document.getElementById('linuxOptChart').getContext('2d');
-		var linuxTTChart = document.getElementById('linuxTTChart').getContext('2d');
-		var windowsChart = document.getElementById('windowsOptChart').getContext('2d');
-		var windowsTTChart = document.getElementById('windowsTTChart').getContext('2d');
+		var linuxChart = document.getElementById('linuxOptChart').getContext(
+				'2d');
+		var linuxTTChart = document.getElementById('linuxTTChart').getContext(
+				'2d');
+		var windowsChart = document.getElementById('windowsOptChart')
+				.getContext('2d');
+		var windowsTTChart = document.getElementById('windowsTTChart')
+				.getContext('2d');
+		var graphRegion=[[${session.graphRegion}]];
+		var linxOptValues=[[${session.optValuesLinux}]];
+		var windowsOptValues=[[${session.optValuesWindows}]];
+		console.log([[${session.TTLinux}]]);
+		var linuxTTValues=[[${session.TTLinux}]];
+		var windowsTTValues=[[${session.TTWindows}]];
+		
+		
 		//xlabels=data.xs;
 		//ylabels=data.ys;
 		//Global Options
@@ -139,8 +154,8 @@
 			data : {
 				labels : xlabels,
 				datasets : [ {
-					label : 'Virginia',
-					data : ytemp,
+					label : graphRegion,
+					data : linxOptValues,
 					fill : true,
 					backgroundColor : [ 'blue', 'green', 'black', 'red',
 							'brown' ],
@@ -153,7 +168,7 @@
 			options : {
 				title : {
 					display : true,
-					text : "Best optimised solution for Virginia",
+					text : "Best optimised solution for "+graphRegion,
 					fontSize : 12
 				},
 				legend : {
@@ -171,29 +186,31 @@
 				}
 			}
 		});
-		
+
 		//Linux TT Chart
 		//Note : In TT Chart Heading should be dynamic
 		var lChart2 = new Chart(linuxTTChart, {
 			type : 'line',
 			data : {
 				labels : xlabels,
-				datasets : [ {
-					label : 'Virginia',
-					data : ytemp,
-					fill : false,
-					backgroundColor : [ 'blue', 'green', 'black', 'red',
-							'brown' ],
-					borderWidth : 1,
-					borderColor : '#777',
-					hoverBorderWidth : 3,
-					hoverBorderColor : '#000'
-				} ]
+				datasets : [ 
+				{
+						label : graphRegion,
+						data : ytemp,
+						fill : false,
+						backgroundColor : [ 'blue', 'green', 'black', 'red',
+								'brown' ],
+						borderWidth : 1,
+						borderColor : '#777',
+						hoverBorderWidth : 3,
+						hoverBorderColor : '#000'
+				}
+			]
 			},
 			options : {
 				title : {
 					display : true,
-					text : "Top 20 Optimised solution for Virginia",
+					text : "Top 20 Optimised solution for "+graphRegion,
 					fontSize : 12
 				},
 				legend : {
@@ -211,15 +228,15 @@
 				}
 			}
 		});
-		
+
 		//Windows Optimisation Chart
 		var wChart1 = new Chart(windowsChart, {
 			type : 'pie',
 			data : {
 				labels : xlabels,
 				datasets : [ {
-					label : 'EMEA',
-					data : ytemp,
+					label : graphRegion,
+					data : windowsOptValues,
 					fill : true,
 					backgroundColor : [ 'blue', 'green', 'black', 'red',
 							'brown' ],
@@ -232,7 +249,7 @@
 			options : {
 				title : {
 					display : true,
-					text : "Best optimised solution for EMEA",
+					text : "Best optimised solution for "+graphRegion,
 					fontSize : 12
 				},
 				legend : {
@@ -250,15 +267,15 @@
 				}
 			}
 		});
-		
+
 		//Windows TT Chart
 		var wChart2 = new Chart(windowsTTChart, {
 			type : 'line',
 			data : {
 				labels : xlabels,
 				datasets : [ {
-					label : 'EMEA',
-					data : ytemp,
+					label : graphRegion,
+					data : windowsTTValues,
 					fill : false,
 					backgroundColor : [ 'blue', 'green', 'black', 'red',
 							'brown' ],
@@ -271,7 +288,7 @@
 			options : {
 				title : {
 					display : true,
-					text : "Top 20 Optimised solution for EMEA",
+					text : "Top 20 Optimised solution for "+graphRegion,
 					fontSize : 12
 				},
 				legend : {
@@ -678,12 +695,12 @@
 			<br>
 			<div class="row" id="linuxChartGroup" name="linuxChartGroup">
 				<div class="col-lg-6">
-					<div align="center"  class="container-fluid" style="width: 500px">
+					<div align="center" class="container-fluid" style="width: 500px">
 						<canvas id="linuxTTChart"></canvas>
 					</div>
 				</div>
 				<div class="col-lg-6">
-					<div align="center"  class="container-fluid" style="width: 500px">
+					<div align="center" class="container-fluid" style="width: 500px">
 						<canvas id="linuxOptChart"></canvas>
 					</div>
 				</div>
@@ -692,7 +709,7 @@
 			<div class="row" id="windowsChartGroup" name="windowsChartGroup"
 				hidden="true">
 				<div class="col-lg-6">
-					<div align="center"  class="container-fluid" style="width: 500px">
+					<div align="center" class="container-fluid" style="width: 500px">
 						<canvas id="windowsTTChart"></canvas>
 					</div>
 				</div>

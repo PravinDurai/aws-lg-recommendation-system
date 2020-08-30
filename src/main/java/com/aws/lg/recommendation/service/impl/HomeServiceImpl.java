@@ -110,7 +110,16 @@ public class HomeServiceImpl implements HomeService {
 		double totalCostWindows=0;
 		calculateCost(sortedOrderWindows, maxVMInstance, instanceCostWindows, totalUserLoadWindows, totalCostWindows);
 		int i=0;
+		ECInstance optLinux=new ECInstance();
+		ECInstance optWindows=new ECInstance();
 		for(Double temp:sortedOrderLinux.keySet()) {
+			if(i==0) {
+				optLinux.setMicro(sortedOrderLinux.get(temp).getMicro());
+				optLinux.setSmall(sortedOrderLinux.get(temp).getSmall());
+				optLinux.setMedium(sortedOrderLinux.get(temp).getMedium());
+				optLinux.setLarge(sortedOrderLinux.get(temp).getLarge());
+				optLinux.setXtraLarge(sortedOrderLinux.get(temp).getXtraLarge());
+			}
 			if(i>19) {
 				break;
 			}
@@ -119,13 +128,20 @@ public class HomeServiceImpl implements HomeService {
 		}
 		i=0;
 		for(Double temp:sortedOrderWindows.keySet()) {	
+			if(i==0) {
+				optWindows.setMicro(sortedOrderWindows.get(temp).getMicro());
+				optWindows.setSmall(sortedOrderWindows.get(temp).getSmall());
+				optWindows.setMedium(sortedOrderWindows.get(temp).getMedium());
+				optWindows.setLarge(sortedOrderWindows.get(temp).getLarge());
+				optWindows.setXtraLarge(sortedOrderWindows.get(temp).getXtraLarge());
+			}
 			if(i>19) {
 				break;
 			}
 			sortedOrderTTWindows.put(temp, sortedOrderWindows.get(temp));
 			i++;
 		}
-		OptimisedResult opResult=new OptimisedResult(sortedOrderTTLinux, sortedOrderTTWindows,sortedOrderLinux, sortedOrderWindows );
+		OptimisedResult opResult=new OptimisedResult(optLinux,optWindows,sortedOrderTTLinux, sortedOrderTTWindows,sortedOrderLinux, sortedOrderWindows );
 		return (opResult);
 	}
 	

@@ -92,6 +92,11 @@ public class ECInstance {
 		this.totalCost=0;
 		this.totalUsers=0;
 	}
+	
+	public int[] toArray() {
+		int myArray[]= {this.micro,this.small,this.medium,this.large,this.xtraLarge};
+		return(myArray);
+	}
 
 	@Override
 	public String toString() {
