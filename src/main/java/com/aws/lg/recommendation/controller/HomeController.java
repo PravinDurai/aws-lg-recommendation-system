@@ -36,9 +36,12 @@ public class HomeController {
 	
 	@PostMapping("/calculate")
 	public String calculateOhioEast(@ModelAttribute("InstanceModel") InstanceModel instanceModel) {
-		OptimisedResult optimisedResult=homeService.calculate(instanceModel);
-		int ttLinux[][]=new int[20][5];
-		int ttWindows[][]=new int[20][5];
+		OptimisedResult optimisedResult;
+		if(instanceModel.getUserLoad()!=0) {
+			optimisedResult=homeService.calculateUserLoad(instanceModel);
+		}else {
+			optimisedResult=homeService.calculateThroughput(instanceModel);
+		}
 		if(optimisedResult.getSortedOrderLinux()==null||optimisedResult.getSortedOrderWindows()==null) {
 			session.setAttribute("noData", false);
 			session.setAttribute("message","Please select the mandatory fields and then try to find the optimised solution");
@@ -48,33 +51,7 @@ public class HomeController {
 			session.setAttribute("showCharts", false);
 			session.setAttribute("graphRegion", instanceModel.getRegion());
 			int i=0;
-			for(Double temp:optimisedResult.getTopTOptResultLinux().keySet()) {
-				for(int j=0;j<5;j++) {
-					switch(j) {
-					case 0:
-						ttLinux[i][j]=optimisedResult.getTopTOptResultLinux().get(temp).getMicro();
-						break;
-					case 1:
-						ttLinux[i][j]=optimisedResult.getTopTOptResultLinux().get(temp).getSmall();
-						break;
-					case 2:
-						ttLinux[i][j]=optimisedResult.getTopTOptResultLinux().get(temp).getMedium();
-						break;
-					case 3:
-						ttLinux[i][j]=optimisedResult.getTopTOptResultLinux().get(temp).getLarge();
-						break;
-					case 4:
-						ttLinux[i][j]=optimisedResult.getTopTOptResultLinux().get(temp).getXtraLarge();
-						break;
-					}
-				}
-				i++;
-			}
-			for(Double temp:optimisedResult.getTopTOptResultWindows().keySet()) {
-				//ttWindows[i++]=optimisedResult.getTopTOptResultWindows().get(temp).toArray();
-			}
-			session.setAttribute("TTLinux", ttLinux);
-			session.setAttribute("TTWindows", ttWindows);
+			session.setAttribute("displayOptChart",true);
 			session.setAttribute("optValuesLinux", optimisedResult.getOptLinux().toArray());
 			session.setAttribute("optValuesWindows", optimisedResult.getOptWindows().toArray());
 		}

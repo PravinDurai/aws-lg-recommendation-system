@@ -8,7 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="customer_login", schema="db_mapping")
+@Table(name="customer_login")
+//@Table(name="customer_login", schema="db_mapping")
 public class LoginEntity {
 	
 	@Id

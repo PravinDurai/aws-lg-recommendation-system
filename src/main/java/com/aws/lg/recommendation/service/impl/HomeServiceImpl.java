@@ -55,7 +55,7 @@ public class HomeServiceImpl implements HomeService {
 	}
 
 	@Override
-	public OptimisedResult calculate(InstanceModel model) {
+	public OptimisedResult calculateUserLoad(InstanceModel model) {
 		// Initializint the user
 		int userLoad = model.getUserLoad();
 
@@ -145,6 +145,38 @@ public class HomeServiceImpl implements HomeService {
 		return (opResult);
 	}
 	
+	@Override
+	public OptimisedResult calculateThroughput(InstanceModel model) {
+		
+		List<VMInfoEntity> vMInstanceEntityList=vMInstanceDao.findByRegionAndScriptComplexity(model.getRegion(), model.getScriptComplexity());
+		double throughputPerUser=0;
+		int i=1;
+		for(VMInfoEntity temp:vMInstanceEntityList) {
+			throughputPerUser+=temp.getThroughput()/temp.getUserLoad();
+			System.out.println("Throughput :\t"+throughputPerUser);
+			i++;
+		}
+		throughputPerUser/=i;
+		i=1;
+		
+		while(true) {
+			if(i*throughputPerUser>=model.getThroughput()) {
+				break;
+			}
+			i++;
+		}
+		InstanceModel instanceModel=new InstanceModel();
+		instanceModel.setThroughput(0);
+		instanceModel.setExecutionDate(model.getExecutionDate());
+		instanceModel.setRegion(model.getRegion());
+		instanceModel.setScriptComplexity(model.getScriptComplexity());
+		instanceModel.setScriptType(model.getScriptType());
+		instanceModel.setUserLoad(i);
+		OptimisedResult optimisedResult=calculateUserLoad(instanceModel);
+		System.out.println("Calculated User Load for the given throughput is :\t"+instanceModel.getUserLoad());
+		return(optimisedResult);
+	}
+	
 	private void calculateCost(Map<Double, ECInstance> sortedOrder,ECInstance maxVMInstance, InstanceCost instanceCost, int totalUserLoad, double totalCost) {
 		for (Double temp : sortedOrder.keySet()) {
 			totalUserLoad = sortedOrder.get(temp).getMicro() * maxVMInstance.getMicro()
@@ -206,10 +238,10 @@ public class HomeServiceImpl implements HomeService {
 		double large = 0;
 		double xtraLarge = 0;
 
-		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
+		System.out.println("Machine : "+machine);
+		
 		for (AWSPriceListEntity temp : priceEntityList) {
+			System.out.println(temp.toString());
 			if (machine.equalsIgnoreCase("linux")) {
 				if (temp.getInstanceType().equals("micro")) {
 					micro = temp.getLinuxPrice();
@@ -264,9 +296,11 @@ public class HomeServiceImpl implements HomeService {
 		vmInfoList.forEach(temp -> {
 			VMInfoDto t = modelMapper.map(temp, VMInfoDto.class);
 			vmInfoDtoList.add(t);
+			
 		});
 
 		for (VMInfoDto temp : vmInfoDtoList) {
+			System.out.println(temp.toString());
 			if (temp.getInstanceType().equals("micro")) {
 				micro = temp.getUserLoad();
 			}
@@ -284,6 +318,7 @@ public class HomeServiceImpl implements HomeService {
 			}
 		}
 		ECInstance newInstance = new ECInstance(micro, small, medium, large, xtraLarge);
+		System.out.println(newInstance.toString());
 		return (newInstance);
 	}
 }

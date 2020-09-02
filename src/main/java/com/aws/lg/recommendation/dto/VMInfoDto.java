@@ -64,5 +64,13 @@ public class VMInfoDto {
 	public void setScriptComplexity(String scriptComplexity) {
 		this.scriptComplexity = scriptComplexity;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "VMInfoDto [infoId=" + infoId + ", region=" + region + ", userLoad=" + userLoad + ", throughput="
+				+ throughput + ", date=" + date + ", instanceType=" + instanceType + ", vmType=" + vmType
+				+ ", scriptComplexity=" + scriptComplexity + "]";
+	}
+	
+	
 }

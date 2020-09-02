@@ -13,7 +13,8 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="aws_vm_instance_info",schema="db_mapping")
+@Table(name="aws_vm_instance_info")
+//@Table(name="aws_vm_instance_info",schema="db_mapping")
 public class VMInfoEntity {
 	
 	@Id

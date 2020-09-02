@@ -8,7 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="aws_price_list",schema="db_mapping")
+@Table(name="aws_price_list")
+//@Table(name="aws_price_list",schema="db_mapping")
 public class AWSPriceListEntity {
 	
 	@Id
@@ -71,5 +72,9 @@ public class AWSPriceListEntity {
 	public void setRegion(String region) {
 		this.region = region;
 	}
-
+	@Override
+	public String toString() {
+		return "AWSPriceListEntity [id=" + id + ", type=" + type + ", linuxPrice=" + linuxPrice + ", windowsPrice="
+				+ windowsPrice + ", instanceType=" + instanceType + ", region=" + region + "]";
+	}
 }

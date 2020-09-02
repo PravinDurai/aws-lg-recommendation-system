@@ -25,6 +25,10 @@ public class OptimisationAlgorithm {
 				smallIncCount++;
 				micro-=instanceCost.getMicro();
 				small+=instanceCost.getSmall();
+				sum=microIncCount*maxUserPerVM.getMicro() + smallIncCount*maxUserPerVM.getSmall() + mediumIncCount*maxUserPerVM.getMedium() + largeIncCount*maxUserPerVM.getLarge() + xLargeIncCount*maxUserPerVM.getXtraLarge();
+				if(sum>=userLoad) {
+					break;
+				}
 				int randomSmallCount=(int) (Math.random()*10);
 				smallIncCount+=randomSmallCount;
 				small+=randomSmallCount*instanceCost.getSmall();
@@ -39,6 +43,10 @@ public class OptimisationAlgorithm {
 				mediumIncCount++;
 				small-=instanceCost.getSmall();
 				medium+=instanceCost.getMedium();
+				sum=microIncCount*maxUserPerVM.getMicro() + smallIncCount*maxUserPerVM.getSmall() + mediumIncCount*maxUserPerVM.getMedium() + largeIncCount*maxUserPerVM.getLarge() + xLargeIncCount*maxUserPerVM.getXtraLarge();
+				if(sum>=userLoad) {
+					break;
+				}
 				int randomMediumCount=(int) (Math.random()*10);
 				mediumIncCount+=randomMediumCount;
 				medium+=randomMediumCount*instanceCost.getMedium();
@@ -53,6 +61,10 @@ public class OptimisationAlgorithm {
 				largeIncCount++;
 				medium-=instanceCost.getMedium();
 				large+=instanceCost.getLarge();
+				sum=microIncCount*maxUserPerVM.getMicro() + smallIncCount*maxUserPerVM.getSmall() + mediumIncCount*maxUserPerVM.getMedium() + largeIncCount*maxUserPerVM.getLarge() + xLargeIncCount*maxUserPerVM.getXtraLarge();
+				if(sum>=userLoad) {
+					break;
+				}
 				int randomLargeCount=(int) (Math.random()*10);
 				largeIncCount+=randomLargeCount;
 				large+=randomLargeCount*instanceCost.getLarge();
@@ -67,6 +79,10 @@ public class OptimisationAlgorithm {
 				xLargeIncCount++;
 				large-=instanceCost.getLarge();
 				xtraLarge+=instanceCost.getXtraLarge();
+				sum=microIncCount*maxUserPerVM.getMicro() + smallIncCount*maxUserPerVM.getSmall() + mediumIncCount*maxUserPerVM.getMedium() + largeIncCount*maxUserPerVM.getLarge() + xLargeIncCount*maxUserPerVM.getXtraLarge();
+				if(sum>=userLoad) {
+					break;
+				}
 				int randomXLargeCount=(int) (Math.random()*10);
 				xLargeIncCount+=randomXLargeCount;
 				xtraLarge+=randomXLargeCount*instanceCost.getXtraLarge();
@@ -80,6 +96,7 @@ public class OptimisationAlgorithm {
 		randomInstance.setMedium(mediumIncCount);
 		randomInstance.setLarge(largeIncCount);
 		randomInstance.setXtraLarge(xLargeIncCount);
+		//System.out.println(randomInstance.toString());
 		return (randomInstance);
 	}
 

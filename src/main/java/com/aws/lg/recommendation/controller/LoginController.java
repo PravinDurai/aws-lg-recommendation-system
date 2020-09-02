@@ -58,6 +58,7 @@ public class LoginController {
 			model.addAttribute("InstanceModel", new InstanceModel(homeService.getAllRegions(),homeService.getAllScriptComplexity()));
 			session.setAttribute("noData", false);
 			session.setAttribute("showCharts", true);
+			session.setAttribute("displayOptChart",false);
 			session.setAttribute("LinuxMap",optimisedResult.getSortedOrderLinux() );
 			session.setAttribute("WindowsMap",optimisedResult.getSortedOrderWindows() );
 			return ("home");

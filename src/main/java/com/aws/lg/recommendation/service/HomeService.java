@@ -10,7 +10,9 @@ import com.aws.lg.recommendation.model.InstanceModel;
 
 public interface HomeService {
 	
-	public OptimisedResult calculate(InstanceModel model);
+	public OptimisedResult calculateUserLoad(InstanceModel model);
+	
+	public OptimisedResult calculateThroughput(InstanceModel model);
 	
 	public Set<String> getAllRegions();
 	

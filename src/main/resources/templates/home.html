@@ -119,28 +119,35 @@
 	}
 </script>
 <script th:inline="javascript">
-
+$("document").ready(function(){ 
+	var cond=[[${session.displayOptChart}]];
 	var xlabels = [ 'Micro', 'Small', 'Medium', 'Large', 'Xtra Lare' ];
 	var ytemp =  [5, 7, 114, 41, 63];
-	//The title is dynamic w.r.t region name selected for all the graph
 	
-	function createChart() {
+	//The title is dynamic w.r.t region name selected for all the graph
+	console.log(cond);
+	var linuxChart = document.getElementById('linuxOptChart')
+	.getContext('2d');
+var windowsChart = document.getElementById('windowsOptChart')
+	.getContext('2d');
+	var graphRegion=[[${session.graphRegion}]];
+	var linxOptValues=[[${session.optValuesLinux}]];
+	var windowsOptValues=[[${session.optValuesWindows}]];
+	//function createChart() {
+		if(cond){
+			
+		
 		//await anyasynchronous function fr	om where we get the data for the chart
 		//data=await getVirginiaChartData();
-		var linuxChart = document.getElementById('linuxOptChart').getContext(
-				'2d');
-		var linuxTTChart = document.getElementById('linuxTTChart').getContext(
-				'2d');
-		var windowsChart = document.getElementById('windowsOptChart')
-				.getContext('2d');
-		var windowsTTChart = document.getElementById('windowsTTChart')
-				.getContext('2d');
-		var graphRegion=[[${session.graphRegion}]];
-		var linxOptValues=[[${session.optValuesLinux}]];
-		var windowsOptValues=[[${session.optValuesWindows}]];
-		console.log([[${session.TTLinux}]]);
-		var linuxTTValues=[[${session.TTLinux}]];
-		var windowsTTValues=[[${session.TTWindows}]];
+		
+		//var linuxTTChart = document.getElementById('linuxTTChart').getContext('2d');
+		
+		//var windowsTTChart = document.getElementById('windowsTTChart')
+		//		.getContext('2d');
+		
+		//console.log([[${session.TTLinux}]]);
+		//var linuxTTValues=[[${session.TTLinux}]];
+		//var windowsTTValues=[[${session.TTWindows}]];
 		
 		
 		//xlabels=data.xs;
@@ -168,7 +175,7 @@
 			options : {
 				title : {
 					display : true,
-					text : "Best optimised solution for "+graphRegion,
+					text : "LINUX : Best optimised solution for "+graphRegion,
 					fontSize : 12
 				},
 				legend : {
@@ -186,7 +193,7 @@
 				}
 			}
 		});
-
+/*
 		//Linux TT Chart
 		//Note : In TT Chart Heading should be dynamic
 		var lChart2 = new Chart(linuxTTChart, {
@@ -228,7 +235,7 @@
 				}
 			}
 		});
-
+*/
 		//Windows Optimisation Chart
 		var wChart1 = new Chart(windowsChart, {
 			type : 'pie',
@@ -249,7 +256,7 @@
 			options : {
 				title : {
 					display : true,
-					text : "Best optimised solution for "+graphRegion,
+					text : "WINDOWS : Best optimised solution for "+graphRegion,
 					fontSize : 12
 				},
 				legend : {
@@ -267,7 +274,8 @@
 				}
 			}
 		});
-
+		
+		/*
 		//Windows TT Chart
 		var wChart2 = new Chart(windowsTTChart, {
 			type : 'line',
@@ -306,9 +314,10 @@
 				}
 			}
 		});
-
+*/
 		document.getElementById("myGraph").hidden = false;
 	}
+	});
 </script>
 </head>
 <body>
@@ -407,16 +416,27 @@
 					<div class=" flip-box-inner">
 						<div class="flip-box-front">
 							<h2>Info</h2>
+							<p>Load Testing plays a major role in determining the
+								reliability and stability of the system</p>
+							<p>Load Testing is generally performed by distributing the
+								load across different geographic location</p>
+							<p>Load Generators are used to generate the virtual users
+								that are required for load testing</p>
+							<p>Load Generating Agent play's a key role in generating the
+								virtual users</p>
+							<p>Flip to have a look at the instructions</p>
+						</div>
+						<div class="flip-box-back">
+							<h2>Instruction</h2>
+							<p>Please select a region where you would like to distribute
+								the load</p>
+							<p>Select the script complexity [High/Low]. It's one of the
+								key component</p>
 							<p>Please make sure you select the date, when you would like
 								to lease the Load Generator and the user Load for this region</p>
 							<p>Based on the user Load and the current pricing we should
 								be able to get you the optimal price with which you can lease LG
 								that generate the given load</p>
-							<p>Please turn over to have a look at the instructions</p>
-						</div>
-						<div class="flip-box-back">
-							<h2>Instruction</h2>
-							<p>-></p>
 						</div>
 					</div>
 				</div>
@@ -574,12 +594,14 @@
 									<i class="far fa-sun fa-sm pr-2" aria-hidden="true"></i>Windows
 									Instances
 								</button>
+								<!-- 
 								<button type="button"
 									class="btn btn-outline-dark btn-rounded waves-effect"
 									style="color: blue" onclick="createChart()">
 									<i class="far fa-sun fa-sm pr-2" aria-hidden="true"></i>View
 									Graph
 								</button>
+							 	-->
 							</div>
 							<br> <br>
 
@@ -676,6 +698,7 @@
 		</div>
 		<br>
 		<div class="container-fluid" id="myGraph" name="myGraph" hidden="true">
+			<!-- 
 			<div class="row">
 				<div class="btn-group" role="group" aria-label="Basic example">
 					<button type="button"
@@ -692,25 +715,12 @@
 					</button>
 				</div>
 			</div>
+			-->
 			<br>
 			<div class="row" id="linuxChartGroup" name="linuxChartGroup">
 				<div class="col-lg-6">
 					<div align="center" class="container-fluid" style="width: 500px">
-						<canvas id="linuxTTChart"></canvas>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div align="center" class="container-fluid" style="width: 500px">
 						<canvas id="linuxOptChart"></canvas>
-					</div>
-				</div>
-			</div>
-
-			<div class="row" id="windowsChartGroup" name="windowsChartGroup"
-				hidden="true">
-				<div class="col-lg-6">
-					<div align="center" class="container-fluid" style="width: 500px">
-						<canvas id="windowsTTChart"></canvas>
 					</div>
 				</div>
 				<div class="col-lg-6">
@@ -719,6 +729,21 @@
 					</div>
 				</div>
 			</div>
+			<!-- 
+			<div class="row" id="windowsChartGroup" name="windowsChartGroup"
+				hidden="true">
+				<div class="col-lg-6">
+					<div align="center" class="container-fluid" style="width: 500px">
+						<canvas id="linuxTTChart"></canvas>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div align="center" class="container-fluid" style="width: 500px">
+						<canvas id="windowsTTChart"></canvas>
+					</div>
+				</div>
+			</div>
+			 -->
 		</div>
 </body>
 </html>

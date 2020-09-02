@@ -15,6 +15,6 @@ public class IndexController {
 	public String main(Model model) {
 		model.addAttribute("Login",new LoginModel());
 		System.out.println("index");
-		return("index");
+		return("redirect:/auth/login");
 	}
 }
