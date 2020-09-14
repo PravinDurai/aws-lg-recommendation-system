@@ -114,13 +114,15 @@
 	}
 
 	function showWindowsChart() {
-		document.getElementById("linuxChartGroup").hidden = true;
-		document.getElementById("windowsChartGroup").hidden = false;
+		document.getElementById("linuxChartGroup").hidden = linuxCost;
+		document.getElementById("windowsChartGroup").hidden = windowsCost;
 	}
 </script>
 <script th:inline="javascript">
 $("document").ready(function(){ 
 	var cond=[[${session.displayOptChart}]];
+	var linuxCost=[[${session.optCostLinux}]];
+	var windowsCost=[[${session.optCostWindows}]];
 	var xlabels = [ 'Micro', 'Small', 'Medium', 'Large', 'Xtra Lare' ];
 	var ytemp =  [5, 7, 114, 41, 63];
 	
@@ -316,6 +318,8 @@ var windowsChart = document.getElementById('windowsOptChart')
 		});
 */
 		document.getElementById("myGraph").hidden = false;
+		document.getElementById("linuxChartCost").innerHTML = "Optimised Cost : "+linuxCost;
+		document.getElementById("windowsChartCost").innerHTML = "Optimised Cost : "+windowsCost;
 	}
 	});
 </script>
@@ -475,7 +479,7 @@ var windowsChart = document.getElementById('windowsOptChart')
 							<div class="col-sm-6">
 
 								<select th:field="*{scriptComplexity}" class="form-control"
-									id="region" name="region">
+									id="region" name="region" required="required">
 									<option th:each="i : *{scriptType}" th:value="${i}"
 										th:text="${i}">
 								</select>
@@ -492,7 +496,7 @@ var windowsChart = document.getElementById('windowsOptChart')
 								class="custom-control custom-radio custom-control-inline col-sm-4">
 								<label class="form-check-label"> <input type="radio"
 									class="form-check-input" name="optradio" id="userLoadRadio"
-									onclick="radioFlip()"><b><i>User Load</i></b>
+									onclick="radioFlip()" required="required"><b><i>User Load</i></b>
 								</label>
 							</div>
 							<div align="right"
@@ -500,7 +504,7 @@ var windowsChart = document.getElementById('windowsOptChart')
 
 								<label class="form-check-label"> <input type="radio"
 									class="form-check-input" name="optradio" id="throughputRadio"
-									onclick="radioFlip()"><b><i>Throughput</i></b>
+									onclick="radioFlip()" required="required"><b><i>Throughput/Hour</i></b>
 								</label>
 								<!-- 
 								<input type="radio" class="custom-control-input" 
@@ -512,19 +516,19 @@ var windowsChart = document.getElementById('windowsOptChart')
 						</div>
 						<br>
 						<div class="row form-group">
-							<div class="col-sm-3">
+							<div class="col-sm-3" align="left">
 								<label><b><i>User Load</i></b></label>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-3" align="left">
 								<input type="text" id="userLoadTF" th:field="*{userLoad}"
 									class="form-control" required="required"></select>
 								<div class="valid-feedback">Valid.</div>
 								<div class="invalid-feedback">Please fill out this field.</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-3" align="left">
 								<label><b><i>Throughput</i></b></label>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-3" align="left">
 								<input type="text" id="throughputTF" th:field="*{throughput}"
 									class="form-control" required="required"></select>
 								<div class="valid-feedback">Valid.</div>
@@ -538,7 +542,7 @@ var windowsChart = document.getElementById('windowsOptChart')
 							</div>
 							<div class="col-sm-6">
 								<input class="form-control" type="datetime-local"
-									th:field="*{executionDate}" />
+									th:field="*{executionDate}" required="required"/>
 								<div class="valid-feedback">Valid.</div>
 								<div class="invalid-feedback">Please choose the date when
 									you are planning to execute the load test</div>
@@ -546,7 +550,7 @@ var windowsChart = document.getElementById('windowsOptChart')
 						</div>
 						<div class="row form-group">
 							<div align="left" class="col-sm-6">
-								<input type="submit" class="btn btn-dark" style="color: blue" />
+								<input type="submit" class="btn btn-dark" style="color: white" />
 							</div>
 
 							<div align="right" class="col-sm-6">
@@ -556,7 +560,7 @@ var windowsChart = document.getElementById('windowsOptChart')
 									onclick="createChart()" />
 								-->
 								<!-- Button to Open the Modal -->
-								<button type="button" style="color: blue"
+								<button type="button" style="color: white"
 									class="btn btn-dark form-control" data-toggle="modal"
 									data-target="#myModal">Show Data</button>
 							</div>
@@ -574,7 +578,7 @@ var windowsChart = document.getElementById('windowsOptChart')
 
 					<!-- Modal Header -->
 					<div class="modal-header">
-						<h4 class="modal-title">Top 20 Optimised solution</h4>
+						<h4 class="modal-title">Top 20 Optimised solution (EC2 T2 Instance)</h4>
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
 
@@ -616,7 +620,7 @@ var windowsChart = document.getElementById('windowsOptChart')
 										<th>Large</th>
 										<th>Xtra Large</th>
 										<th>Total User Load</th>
-										<th>Estimated Cost</th>
+										<th>Estimated Cost(in USD)</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -657,7 +661,7 @@ var windowsChart = document.getElementById('windowsOptChart')
 										<th>Large</th>
 										<th>Xtra Large</th>
 										<th>Total User Load</th>
-										<th>Estimated Cost</th>
+										<th>Estimated Cost(in USD)</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -721,11 +725,13 @@ var windowsChart = document.getElementById('windowsOptChart')
 				<div class="col-lg-6">
 					<div align="center" class="container-fluid" style="width: 500px">
 						<canvas id="linuxOptChart"></canvas>
+						<label id="linuxChartCost" text=""></label>
 					</div>
 				</div>
 				<div class="col-lg-6">
 					<div align="center" class="container-fluid" style="width: 500px">
 						<canvas id="windowsOptChart"></canvas>
+						<label id="windowsChartCost" text=""></label>
 					</div>
 				</div>
 			</div>

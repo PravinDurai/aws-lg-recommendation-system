@@ -1,5 +1,9 @@
 package com.aws.lg.recommendation.algorithm;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class ECInstance {
 	
 	private int micro;
@@ -9,6 +13,7 @@ public class ECInstance {
 	private int xtraLarge;
 	private int totalUsers;
 	private double totalCost;
+	
 	
 	public ECInstance() {
 		super();

@@ -1,5 +1,7 @@
 package com.aws.lg.recommendation.service.impl;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -119,6 +121,8 @@ public class HomeServiceImpl implements HomeService {
 				optLinux.setMedium(sortedOrderLinux.get(temp).getMedium());
 				optLinux.setLarge(sortedOrderLinux.get(temp).getLarge());
 				optLinux.setXtraLarge(sortedOrderLinux.get(temp).getXtraLarge());
+				optLinux.setTotalCost(sortedOrderLinux.get(temp).getTotalCost());
+				optLinux.setTotalUsers(sortedOrderLinux.get(temp).getTotalUsers());
 			}
 			if(i>19) {
 				break;
@@ -134,6 +138,8 @@ public class HomeServiceImpl implements HomeService {
 				optWindows.setMedium(sortedOrderWindows.get(temp).getMedium());
 				optWindows.setLarge(sortedOrderWindows.get(temp).getLarge());
 				optWindows.setXtraLarge(sortedOrderWindows.get(temp).getXtraLarge());
+				optWindows.setTotalCost(sortedOrderWindows.get(temp).getTotalCost());
+				optWindows.setTotalUsers(sortedOrderWindows.get(temp).getTotalUsers());
 			}
 			if(i>19) {
 				break;
@@ -153,16 +159,18 @@ public class HomeServiceImpl implements HomeService {
 		int i=1;
 		for(VMInfoEntity temp:vMInstanceEntityList) {
 			throughputPerUser+=temp.getThroughput()/temp.getUserLoad();
-			System.out.println("Throughput :\t"+throughputPerUser);
 			i++;
+//			System.out.println("Throughput :\t"+temp.getThroughput()+"\tThroughput Per user :\t"+throughputPerUser+"\t User Load :\t"+temp.getUserLoad());
 		}
-		throughputPerUser/=i;
+		
+		throughputPerUser=(throughputPerUser)/i;
 		i=1;
 		
 		while(true) {
-			if(i*throughputPerUser>=model.getThroughput()) {
+			if(i*throughputPerUser>=(model.getThroughput()*60)) {
 				break;
 			}
+//			System.out.println("User Throughput :\t"+model.getThroughput()*60+"\tUser :\t"+(i*throughputPerUser)+"\t Value of i :\t"+i);
 			i++;
 		}
 		InstanceModel instanceModel=new InstanceModel();
@@ -173,11 +181,12 @@ public class HomeServiceImpl implements HomeService {
 		instanceModel.setScriptType(model.getScriptType());
 		instanceModel.setUserLoad(i);
 		OptimisedResult optimisedResult=calculateUserLoad(instanceModel);
-		System.out.println("Calculated User Load for the given throughput is :\t"+instanceModel.getUserLoad());
+//		System.out.println("Calculated User Load for the given throughput is :\t"+instanceModel.getUserLoad());
 		return(optimisedResult);
 	}
 	
 	private void calculateCost(Map<Double, ECInstance> sortedOrder,ECInstance maxVMInstance, InstanceCost instanceCost, int totalUserLoad, double totalCost) {
+		
 		for (Double temp : sortedOrder.keySet()) {
 			totalUserLoad = sortedOrder.get(temp).getMicro() * maxVMInstance.getMicro()
 					+ sortedOrder.get(temp).getSmall() * maxVMInstance.getSmall()
@@ -189,6 +198,10 @@ public class HomeServiceImpl implements HomeService {
 					+ sortedOrder.get(temp).getMedium() * instanceCost.getMedium()
 					+ sortedOrder.get(temp).getLarge() * instanceCost.getLarge()
 					+ sortedOrder.get(temp).getXtraLarge() * instanceCost.getXtraLarge();
+			
+			BigDecimal bd=new BigDecimal(Double.toString(totalCost));
+			bd=bd.setScale(5, RoundingMode.HALF_UP);
+			totalCost=bd.doubleValue();
 			sortedOrder.get(temp).setTotalCost(totalCost);
 			sortedOrder.get(temp).setTotalUsers(totalUserLoad);
 //			System.out.println(sortedOrder.get(temp).toString());

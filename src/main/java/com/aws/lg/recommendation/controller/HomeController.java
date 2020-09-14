@@ -53,7 +53,13 @@ public class HomeController {
 			int i=0;
 			session.setAttribute("displayOptChart",true);
 			session.setAttribute("optValuesLinux", optimisedResult.getOptLinux().toArray());
+			
 			session.setAttribute("optValuesWindows", optimisedResult.getOptWindows().toArray());
+			
+//			System.out.println("opt linux Cost"+optimisedResult.getOptWindows().getTotalCost());
+//			System.out.println("opt windows Cost"+optimisedResult.getOptLinux().getTotalCost());
+			session.setAttribute("optCostLinux", optimisedResult.getOptLinux().getTotalCost());
+			session.setAttribute("optCostWindows", optimisedResult.getOptWindows().getTotalCost());
 		}
 		session.setAttribute("LinuxMap",optimisedResult.getTopTOptResultLinux() );
 		session.setAttribute("WindowsMap",optimisedResult.getTopTOptResultWindows() );
