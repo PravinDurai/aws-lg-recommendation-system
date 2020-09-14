@@ -18,8 +18,8 @@
 #Git URL for cloning
 #Heroku Git URL : https://git.heroku.com/masters-project-demo.git
 #cmd : git clone https://git.heroku.com/masters-project-demo.git
-#NeoLoad Script and Results : https://github.com/PravinDurai/MS_Project_NeoLoad_Scripts.git
-#cmd : git clone https://github.com/PravinDurai/MS_Project_NeoLoad_Scripts.git
+#NeoLoad Script and Results : https://github.com/PravinDurai/MS_Project_NeoLoad_Scripts_LoadTest_Results.git
+#cmd : git clone https://github.com/PravinDurai/MS_Project_NeoLoad_Scripts_LoadTest_Results.git
 
 #Postgress Credentials
 #Host : ec2-3-216-129-140.compute-1.amazonaws.com
